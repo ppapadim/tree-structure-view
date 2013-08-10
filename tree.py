@@ -92,10 +92,25 @@ def main(argv):
     ts = TreeStyle()
     # Do not add leaf names automatically
     ts.show_leaf_name = False
+    ts.show_branch_length = False
+    ts.show_scale = False
+
     # Use my custom layout
     ts.layout_fn = my_layout
 
     t = Tree(treeStr, format=8)
+
+    for n in t.traverse():
+       nstyle = NodeStyle()
+       nstyle["fgcolor"] = "red"
+       nstyle["size"] = 15
+       n.set_style(nstyle)
+
+    # Let's now modify the aspect of the root node
+    t.img_style["size"] = 30
+    t.img_style["fgcolor"] = "blue"
+
+
     # Tell ETE to use your custom Tree Style
     t.show(tree_style=ts)
     t.render("mytree.png", w=183, units="mm")
