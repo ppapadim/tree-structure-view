@@ -19,6 +19,14 @@ def cleanhtml(raw_html):
 
   return cleantext
 
+def toHex(dec):
+    x = (dec % 16)
+    digits = "0123456789ABCDEF"
+    rest = dec / 16
+    if (rest == 0):
+        return digits[x]
+    return toHex(rest) + digits[x]
+
 def my_layout(node):
     if node.is_leaf():
          # If terminal node, draws its name
@@ -59,6 +67,18 @@ def getRootName():
             rootname = email_list[i]
     return rootname
 
+def addNodeCount(t, count):
+    for child in t._children:
+        if len(child._children) == 0:
+            count = count + 1
+        else:
+            count = 1 + addNodeCount(child, 0)
+    t.add_face(TextFace(str(count)), column=1, position = "branch-bottom")
+    if (255 - count * 5) < 0:
+        t.img_style["fgcolor"] = "#000000"
+    else:
+        t.img_style["fgcolor"] = "#00" + toHex(255 - count * 5) + "00"
+    return count
 
 def main(argv):
 
@@ -106,14 +126,13 @@ def main(argv):
        nstyle["size"] = 15
        n.set_style(nstyle)
 
-    # Let's now modify the aspect of the root node
-    t.img_style["size"] = 30
-    t.img_style["fgcolor"] = "blue"
-
+    count = 0
+    addNodeCount(t, 0)
+    #t.add_face(TextFace(str(addNodeCount(t, 0))), column=1, position = "branch-bottom")
 
     # Tell ETE to use your custom Tree Style
     t.show(tree_style=ts)
-    t.render("mytree.png", w=183, units="mm")
+    t.render("tree_structure.png", w=183, units="mm")
 
 
 if __name__ == "__main__":
