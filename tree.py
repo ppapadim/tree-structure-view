@@ -12,12 +12,9 @@ email_list = []
 manager_list = []
 
 def cleanhtml(raw_html):
-
-  cleanr =re.compile('<.*?>')
-
-  cleantext = re.sub(cleanr,'', raw_html)
-
-  return cleantext
+    cleanr =re.compile('<.*?>')
+    cleantext = re.sub(cleanr,'', raw_html)
+    return cleantext
 
 def toHex(dec):
     x = (dec % 16)
@@ -29,11 +26,11 @@ def toHex(dec):
 
 def my_layout(node):
     if node.is_leaf():
-         # If terminal node, draws its name
-         name_faces = AttrFace("name")
+        # If terminal node, draws its name
+        name_faces = AttrFace("name")
     else:
-         # If internal node, draws label with smaller font size
-         name_faces = AttrFace("name", fsize=10)
+        # If internal node, draws label with smaller font size
+        name_faces = AttrFace("name", fsize=10)
     # Adds the name face to the image at the preferred position
     faces.add_face_to_node(name_faces, node, column=0, position="branch-right")
 
@@ -108,6 +105,7 @@ def main(argv):
     treeStr = getTree(rootname, "(", ")" + rootname + ";")
     treeStr = treeStr.replace("(,", "(")
     treeStr = treeStr.replace(",)", ")")
+    treeStr = treeStr.replace(",,", ",")
 
     ts = TreeStyle()
     # Do not add leaf names automatically
